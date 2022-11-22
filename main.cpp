@@ -1,7 +1,8 @@
 #include <iostream>
 #include "core/window.h"
 
-// draw a filled in rect
+void setPixel(ScreenPixelData* pixelData, int x, int y, unsigned int color);
+
 void drawRect(ScreenPixelData* pixelData, int xOffset, int yOffset, int width, int height, unsigned int color);
 void drawCircleSimple(ScreenPixelData* pixelData, int xOffset, int yOffset, int radius, unsigned int color);
 void drawCricleMidPoint(ScreenPixelData* pixelData, int xOffset, int yOffset, int radius, unsigned int color = -1);
@@ -31,17 +32,17 @@ int main(int argc, char* argv[])
     if (isRunning1)
       wnd1.present();
       ScreenPixelData* pixelData = wnd1.getPixelData();
-      drawRect(pixelData, 10, 10, 200, 200, 0xFF5733);
+      drawRect(pixelData, 10, 10, 200, 100, 0xFF5733);
 
     if (isRunning2)
       wnd2.present();
   	  ScreenPixelData* pixelData1 = wnd2.getPixelData();
-      drawCircleSimple(pixelData1, 200, 200, 100, 0xFF5733);
+      drawCircleSimple(pixelData1, 200, 200, 100, 0x0000FF);
 
   	if (isRunning3)
         wnd3.present();
   		ScreenPixelData* pixelData3 = wnd3.getPixelData();
-	    drawCricleMidPoint(pixelData3, 175, 175, 150);
+	    drawCricleMidPoint(pixelData3, 175, 175, 150, 0x0000FF);
     
     Sleep(10);
 
@@ -50,15 +51,21 @@ int main(int argc, char* argv[])
   return 0;
 }
 
+void setPixel(ScreenPixelData* pixelData, int x, int y, unsigned int color)
+{
+    pixelData->data[x + y * pixelData->pitch / 4] = color;
+}
+
 void drawRect(ScreenPixelData* pixelData, int xOffset, int yOffset, int width, int height, unsigned int color)
 {
     if (pixelData != nullptr) // make sure pixelData was initialized properly
     {
-        for (width = xOffset; width < 300; ++width) // foreach pixel in y
+        for (int y = yOffset; y < height; ++y) // foreach pixel in y
         {
-            for (height = yOffset; height < 300; ++height) // foreach pixel in x
+            for (int x = xOffset; x < width; ++x) // foreach pixel in x
             {
-                pixelData->data[width + height * pixelData->pitch / 4] = color; // lascha plx explain the /4
+                //pixelData->data[width + height * pixelData->pitch / 4] = color; // lascha plx explain the /4
+                setPixel(pixelData, x, y, color);
             }
         }
     }
@@ -78,7 +85,8 @@ void drawCircleSimple(ScreenPixelData* pixelData, int xOffset, int yOffset, int 
                 // since we're doing radius extent, that's radius pow2, thus the x*x.
                 if ((x * x) + (y * y) <= (radius * radius)) //brackets for my mental health
                 {
-                    pixelData->data[xOffset + x + (yOffset + y) * pixelData->pitch / 4] = 0xFF5733;
+                    //pixelData->data[xOffset + x + (yOffset + y) * pixelData->pitch / 4] = color;
+                    setPixel(pixelData, (xOffset + x), (yOffset + y), color);
                 }
             }
         }
@@ -117,17 +125,17 @@ void drawCricleMidPoint(ScreenPixelData* pixelData, int xOffset, int yOffset, in
         if (x < y)
             break;
 
-        pixelData->data[xOffset + x + (yOffset + y) * pixelData->pitch / 4] = 0xFF5733;
-        pixelData->data[xOffset + -x + (yOffset + y) * pixelData->pitch / 4] = 0x00FF33; //flop
-        pixelData->data[xOffset + x + (yOffset + -y) * pixelData->pitch / 4] = 0xF057FF;
-        pixelData->data[xOffset + -x + (yOffset + -y) * pixelData->pitch / 4] = 0x0000FF; //flop
+        setPixel(pixelData, (xOffset + x), (yOffset + y), color);
+        setPixel(pixelData, (xOffset - x), (yOffset + y), color);
+        setPixel(pixelData, (xOffset + x), (yOffset - y), color);
+        setPixel(pixelData, (xOffset - x), (yOffset - y), color);
 
         if (x != y) // don't redraw points
         {
-            pixelData->data[xOffset + y + (yOffset + x) * pixelData->pitch / 4] = 0x00FF33; //flip
-            pixelData->data[xOffset + -y + (yOffset + x) * pixelData->pitch / 4] = 0xFF5733;
-            pixelData->data[xOffset + y + (yOffset + -x) * pixelData->pitch / 4] = 0x0000FF; //flip
-            pixelData->data[xOffset + -y + (yOffset + -x) * pixelData->pitch / 4] = 0xF057FF;
+            setPixel(pixelData, (xOffset + y), (yOffset + x), color);
+            setPixel(pixelData, (xOffset - y), (yOffset + x), color);
+            setPixel(pixelData, (xOffset + y), (yOffset - x), color);
+            setPixel(pixelData, (xOffset - y), (yOffset - x), color);
         }
 
     }
