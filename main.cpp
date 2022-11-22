@@ -96,20 +96,21 @@ void drawCircleSimple(ScreenPixelData* pixelData, int xOffset, int yOffset, int 
 void drawCricleMidPoint(ScreenPixelData* pixelData, int xOffset, int yOffset, int radius, unsigned int color)
 {
     int x = radius, y = 0;
-    int P = 1 - radius; // first point (radius,0)
+    // I do understand that it's P in which P is a function, however point makes me visualize it better.
+    int point = 1 - radius; // first point (radius,0)
 
     while (x>y)
     {
         y++;
 
-        if (P <= 0) // point inside or on perim
+        if (point <= 0) // point inside or on perim
         {
-            P = P + 2 * y + 1;
+            point = point + 2 * y + 1; // circle magic madoogle
         }
-        else
+        else // not inside that shit
         {
             x--;
-            P = P + 2 * y - 2 * x + 1;
+            point = point + 2 * y - 2 * x + 1; // circle magic madoogle
         }
 
         // stop when all is printed
@@ -117,15 +118,15 @@ void drawCricleMidPoint(ScreenPixelData* pixelData, int xOffset, int yOffset, in
             break;
 
         pixelData->data[xOffset + x + (yOffset + y) * pixelData->pitch / 4] = 0xFF5733;
-        pixelData->data[xOffset + -x + (yOffset + y) * pixelData->pitch / 4] = 0x00FF33;
+        pixelData->data[xOffset + -x + (yOffset + y) * pixelData->pitch / 4] = 0x00FF33; //flop
         pixelData->data[xOffset + x + (yOffset + -y) * pixelData->pitch / 4] = 0xF057FF;
-        pixelData->data[xOffset + -x + (yOffset + -y) * pixelData->pitch / 4] = 0x0000FF;
+        pixelData->data[xOffset + -x + (yOffset + -y) * pixelData->pitch / 4] = 0x0000FF; //flop
 
         if (x != y) // don't redraw points
         {
-            pixelData->data[xOffset + y + (yOffset + x) * pixelData->pitch / 4] = 0x00FF33;
+            pixelData->data[xOffset + y + (yOffset + x) * pixelData->pitch / 4] = 0x00FF33; //flip
             pixelData->data[xOffset + -y + (yOffset + x) * pixelData->pitch / 4] = 0xFF5733;
-            pixelData->data[xOffset + y + (yOffset + -x) * pixelData->pitch / 4] = 0x0000FF;
+            pixelData->data[xOffset + y + (yOffset + -x) * pixelData->pitch / 4] = 0x0000FF; //flip
             pixelData->data[xOffset + -y + (yOffset + -x) * pixelData->pitch / 4] = 0xF057FF;
         }
 
