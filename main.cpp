@@ -15,30 +15,37 @@ int main(int argc, char* argv[])
 {
 
   Window wnd1(windowWidth, windowHeight, "Wnd1");
-  //Window wnd2(400, 400, "Wnd2");
+  Window wnd2(windowWidth, windowHeight, "Wnd2");
+  Window wnd3(windowWidth, windowHeight, "Wnd3");
 
   bool isRunning1;
-  //bool isRunning2;
+  bool isRunning2;
+  bool isRunning3;
 
   do
   {
     isRunning1 = wnd1.exec();
-    //isRunning2 = wnd2.exec();
+    isRunning2 = wnd2.exec();
+    isRunning3 = wnd3.exec();
 
     if (isRunning1)
       wnd1.present();
+      ScreenPixelData* pixelData = wnd1.getPixelData();
+      drawRect(pixelData, 10, 10, 200, 200, 0xFF5733);
 
-    /*if (isRunning2)
-      wnd2.present();*/
+    if (isRunning2)
+      wnd2.present();
+  	  ScreenPixelData* pixelData1 = wnd2.getPixelData();
+      drawCircleSimple(pixelData1, 200, 200, 100, 0xFF5733);
 
-    ScreenPixelData* pixelData = wnd1.getPixelData();
-    //drawRect(pixelData, 10, 10, 200, 200, );
-    //drawCircleSimple(pixelData, 200, 200, 100, 0xFF5733);
-    drawCricleMidPoint(pixelData, 175, 175, 150);
+  	if (isRunning3)
+        wnd3.present();
+  		ScreenPixelData* pixelData3 = wnd3.getPixelData();
+	    drawCricleMidPoint(pixelData3, 175, 175, 150);
     
     Sleep(10);
 
-  } while (isRunning1);// || isRunning2);
+  } while (isRunning1 || isRunning2 || isRunning3);
 
   return 0;
 }
