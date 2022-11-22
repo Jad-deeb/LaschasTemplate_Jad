@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{e187a66e-4820-400f-9798-36f1a6eaf28a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="core\window.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\device.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="core\window.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\device.h">
+      <Filter>core</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
