@@ -1,1 +1,2 @@
 D:\LearnDirectX12\LaschasTemplate\x64\Debug\Template.exe
+D:\LearnDirectX12\LaschasTemplate\LaschasTemplate_Jad\x64\Debug\Template.exe
